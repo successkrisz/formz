@@ -1,0 +1,12 @@
+coverage
+node_modules
+src
+tests
+
+babel.config.js
+rollup.config.js
+setupTests.js
+.eslintrc
+.flowconfig
+*.lock
+*.tgz

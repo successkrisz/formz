@@ -1,0 +1,6 @@
+{
+  "extends": "@ballatech",
+  "rules": {
+    "react/prop-types": 0
+  }
+}
