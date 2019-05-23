@@ -38,6 +38,15 @@ describe('Form', () => {
     expect(context.fields).toEqual({})
   })
 
+  test('should expose the isValid on the context', () => {
+    mount(
+      <Form>
+        <ContextChecker />
+      </Form>
+    )
+    expect(context.isValid).toEqual(true)
+  })
+
   test('should expose setField() on the context', () => {
     mount(
       <Form>
@@ -51,13 +60,13 @@ describe('Form', () => {
       context.setField('foo')('bar')
     })
 
-    expect(context.fields).toEqual({ foo: { value: 'bar' } })
+    expect(context.fields.foo.value).toEqual('bar')
 
     act(() => {
       context.setField('foo')('baz')
     })
 
-    expect(context.fields).toEqual({ foo: { value: 'baz' } })
+    expect(context.fields.foo.value).toEqual('baz')
   })
 
   test('should expose submit() on the context', () => {

@@ -9,22 +9,25 @@ export type Props = {
   +onSubmit?: ({ [string]: any }) => void,
 }
 
-type Field = {
+type Field = {|
   value: string,
-  error?: string,
+  error: ?string,
   warn?: string,
-}
+|}
 
 type State = {
   [string]: Field,
 }
 
-export type Context = {
+export type Validator = (value: any, fields: { [string]: any }) => string | null | void
+
+export type Context = {|
   +fields: State,
-  +setField: string => any => void,
+  +isValid: boolean,
+  +setField: (name: string, validate?: Validator) => any => void,
   +submit: () => void,
   +reset: () => void,
-}
+|}
 
 // ===========================
 // Context
@@ -33,6 +36,7 @@ export type Context = {
 export const FormContext = React.createContext<Context>(
   ({
     fields: {},
+    isValid: true,
     setField: () => () => {},
     submit: () => {},
     reset: () => {},
@@ -44,8 +48,32 @@ export const FormContext = React.createContext<Context>(
 // ===========================
 const Form = ({ children, onSubmit = () => {} }: Props) => {
   const [state, setState] = React.useState<State>({})
-  const setField = (key: string) => (value: any) => {
-    setState((s: State): State => ({ ...s, [key]: { value } }))
+  const isValid = Object.keys(state)
+    .map(field => state[field].error)
+    .every(error => !error)
+  const setField = (key: string, validate?: Validator) => (value: any) => {
+    setState(
+      (s: State): State => ({
+        ...s,
+        [key]: {
+          value,
+          validate,
+          error:
+            typeof validate === 'function'
+              ? validate(value, {
+                  ...Object.keys(s).reduce(
+                    (acc, fieldName) => ({
+                      ...acc,
+                      [fieldName]: s[fieldName].value,
+                    }),
+                    {}
+                  ),
+                  [key]: value,
+                })
+              : null,
+        },
+      })
+    )
   }
   const reset = () => setState({})
   const submit = () =>
@@ -62,7 +90,7 @@ const Form = ({ children, onSubmit = () => {} }: Props) => {
     event.preventDefault()
     submit()
   }
-  const context = { fields: state, setField, submit, reset }
+  const context = { fields: state, isValid, setField, submit, reset }
 
   return (
     <FormContext.Provider value={context}>
