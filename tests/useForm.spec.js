@@ -67,10 +67,14 @@ describe('useForm', () => {
   })
 
   test('should support validation on the field', () => {
-    const minLength = value => (value.length < 10 ? 'too short' : null)
+    const validators = {
+      minLength: value => (value.length < 10 ? 'too short' : null),
+    }
+    const validatorSpy = jest.spyOn(validators, 'minLength')
+
     const wrapper = mount(
       <Form>
-        <SampleInputComponent name="foo" validate={minLength} />
+        <SampleInputComponent name="foo" validate={validators.minLength} />
         <ContextChecker />
       </Form>
     )
@@ -78,6 +82,7 @@ describe('useForm', () => {
     expect(context.fields.foo.value).toEqual('')
     expect(context.fields.foo.error).toEqual('too short')
     expect(context.isValid).toEqual(false)
+    expect(validatorSpy).toHaveBeenCalledWith('', { foo: '' })
 
     act(() => {
       inputFoo.simulate('change', { target: { value: 'short' } })
@@ -86,6 +91,7 @@ describe('useForm', () => {
 
     expect(context.fields.foo.value).toEqual('short')
     expect(context.fields.foo.error).toEqual('too short')
+    expect(validatorSpy).toHaveBeenCalledWith('short', { foo: 'short' })
 
     act(() => {
       inputFoo.simulate('change', { target: { value: 'longEnoughValue' } })
@@ -94,6 +100,7 @@ describe('useForm', () => {
 
     expect(context.fields.foo.value).toEqual('longEnoughValue')
     expect(context.fields.foo.error).toEqual(null)
+    expect(validatorSpy).toHaveBeenCalledWith('longEnoughValue', { foo: 'longEnoughValue' })
     expect(context.isValid).toEqual(true)
   })
 })

@@ -19,7 +19,7 @@ type State = {
   [string]: Field,
 }
 
-export type Validator = (value: any) => string | null | void
+export type Validator = (value: any, fields: State) => string | null | void
 
 export type Context = {|
   +fields: State,
@@ -55,7 +55,23 @@ const Form = ({ children, onSubmit = () => {} }: Props) => {
     setState(
       (s: State): State => ({
         ...s,
-        [key]: { value, validate, error: typeof validate === 'function' ? validate(value) : null },
+        [key]: {
+          value,
+          validate,
+          error:
+            typeof validate === 'function'
+              ? validate(value, {
+                  ...Object.keys(s).reduce(
+                    (acc, fieldName) => ({
+                      ...acc,
+                      [fieldName]: s[fieldName].value,
+                    }),
+                    {}
+                  ),
+                  [key]: value,
+                })
+              : null,
+        },
       })
     )
   }
