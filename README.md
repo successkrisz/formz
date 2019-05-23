@@ -12,10 +12,13 @@ Install package using yarn
 
 ## Usage
 
+    import React from 'react'
     import { Form, useForm, FormContext } from '@ballatech/formz'
 
+    const validator = (value, fields) => value.length < 5 ? 'Too short' : null
+
     const Component = () => {
-      const { value, setField } = useForm('username', '')
+      const { value, setField } = useForm('username', '', validator)
 
       return (
         <input
@@ -32,10 +35,16 @@ Install package using yarn
       return <button onClick={reset}>Reset</button>
     }
 
+    const Submit = () => {
+      const { isValid } = React.useContext(FormContext)
+
+      return <button disabled={!isValid} type="submit">Submit</button>
+    }
+
     const MyCoolForm = ({ onSubmit }) => (
       <Form onSubmit={onSubmit}>
         <Component />
-        <button type="submit">Submit</button>
+        <Submit>
         <Reset />
       </Form>
      )
