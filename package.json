@@ -26,15 +26,15 @@
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@ballatech/eslint-config": "^1.0.0",
     "babel-jest": "^24.8.0",
     "coveralls": "^3.0.3",
     "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.13.0",
+    "enzyme-adapter-react-16": "^1.13.1",
     "eslint": "^5.16.0",
     "flow-bin": "^0.98.1",
     "jest": "^24.8.0",
