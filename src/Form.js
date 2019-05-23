@@ -19,7 +19,7 @@ type State = {
   [string]: Field,
 }
 
-export type Validator = (value: any, fields: State) => string | null | void
+export type Validator = (value: any, fields: { [string]: any }) => string | null | void
 
 export type Context = {|
   +fields: State,
