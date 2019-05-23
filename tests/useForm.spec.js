@@ -4,8 +4,8 @@ import { mount } from 'enzyme'
 
 import { Form, useForm, FormContext } from '../src'
 
-const SampleInputComponent = ({ name }) => {
-  const { value, setField } = useForm(name, '')
+const SampleInputComponent = ({ name, validate }) => {
+  const { value, setField } = useForm(name, '', validate)
 
   return <input onChange={e => setField(e.target.value)} value={value} className={name} />
 }
@@ -34,9 +34,10 @@ describe('useForm', () => {
 
     mount(<Component />)
 
-    const { value, setField, submit, reset } = values
+    const { value, isValid, setField, submit, reset } = values
 
     expect(value).toEqual('')
+    expect(isValid).toEqual(true)
     expect(typeof setField).toEqual('function')
     expect(typeof submit).toEqual('function')
     expect(typeof reset).toEqual('function')
@@ -51,15 +52,48 @@ describe('useForm', () => {
       </Form>
     )
     const inputFoo = wrapper.find('.foo')
-    expect(context.fields).toEqual({ foo: { value: '' }, baz: { value: '' } })
+    expect(context.fields.foo.value).toEqual('')
+    expect(context.fields.baz.value).toEqual('')
 
     act(() => {
       inputFoo.simulate('change', { target: { value: 'bar' } })
     })
     wrapper.update()
 
-    expect(context.fields).toEqual({ foo: { value: 'bar' }, baz: { value: '' } })
+    expect(context.fields.foo.value).toEqual('bar')
+    expect(context.fields.baz.value).toEqual('')
     expect(wrapper.find('.foo').prop('value')).toEqual('bar')
     expect(wrapper.find('.baz').prop('value')).toEqual('')
+  })
+
+  test('should support validation on the field', () => {
+    const minLength = value => (value.length < 10 ? 'too short' : null)
+    const wrapper = mount(
+      <Form>
+        <SampleInputComponent name="foo" validate={minLength} />
+        <ContextChecker />
+      </Form>
+    )
+    const inputFoo = wrapper.find('.foo')
+    expect(context.fields.foo.value).toEqual('')
+    expect(context.fields.foo.error).toEqual('too short')
+    expect(context.isValid).toEqual(false)
+
+    act(() => {
+      inputFoo.simulate('change', { target: { value: 'short' } })
+    })
+    wrapper.update()
+
+    expect(context.fields.foo.value).toEqual('short')
+    expect(context.fields.foo.error).toEqual('too short')
+
+    act(() => {
+      inputFoo.simulate('change', { target: { value: 'longEnoughValue' } })
+    })
+    wrapper.update()
+
+    expect(context.fields.foo.value).toEqual('longEnoughValue')
+    expect(context.fields.foo.error).toEqual(null)
+    expect(context.isValid).toEqual(true)
   })
 })
