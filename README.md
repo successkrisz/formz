@@ -8,10 +8,11 @@ React Form library to provide html like experience when building forms without h
 
 Install package using yarn
 
-    yarn add @ballatech/formz
+  `$ yarn add @ballatech/formz`
 
 ## Usage
 
+```js
     import React from 'react'
     import { Form, useForm, FormContext } from '@ballatech/formz'
 
@@ -50,3 +51,4 @@ Install package using yarn
      )
 
      export default MyCoolForm
+```
