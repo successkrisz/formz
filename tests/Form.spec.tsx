@@ -3,10 +3,10 @@ import { act } from 'react-dom/test-utils'
 import { mount, shallow } from 'enzyme'
 
 import { Form } from '../src'
-import { FormContext } from '../src/Form'
+import { FormContext, Context } from '../src/Form'
 
 describe('Form', () => {
-  let context
+  let context: Context
   const ContextChecker = () => (
     <FormContext.Consumer>
       {value => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormContext, Validator } from './Form'
 
-interface UseFormHook {
+export interface UseFormHook {
   value: any // eslint-disable-line @typescript-eslint/no-explicit-any
   error?: string
   setField: (value: any) => void // eslint-disable-line @typescript-eslint/no-explicit-any
