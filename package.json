@@ -1,6 +1,6 @@
 {
   "name": "@ballatech/formz",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Form library to provide html like experience when building forms without having to worry about state",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
