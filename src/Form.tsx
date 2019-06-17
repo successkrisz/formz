@@ -1,47 +1,48 @@
-// @flow
-import * as React from 'react'
+import React from 'react'
 
 // ===========================
-// Flow Types
+// Types
 // ===========================
-export type Props = {
-  +children: React.Node,
-  +onSubmit?: ({ [string]: any }) => void,
+export interface Props {
+  children: React.ReactNode
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSubmit?: (values: { [fieldName: string]: any }) => void
 }
 
-type Field = {|
-  value: string,
-  error: ?string,
-  warn?: string,
-|}
-
-type State = {
-  [string]: Field,
+interface Field {
+  value: string
+  validate?: Validator
+  error?: string
+  warn?: string
 }
 
-export type Validator = (value: any, fields: { [string]: any }) => string | null | void
+interface State {
+  [fieldName: string]: Field
+}
 
-export type Context = {|
-  +fields: State,
-  +isValid: boolean,
-  +setField: (name: string, validate?: Validator) => any => void,
-  +submit: () => void,
-  +reset: () => void,
-|}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Validator = (value: any, fields: { [fieldName: string]: any }) => string | null
+
+export interface Context {
+  fields: State
+  isValid: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setField: (name: string, validate?: Validator) => (value: any) => void
+  submit: () => void
+  reset: () => void
+}
 
 // ===========================
 // Context
 // ===========================
 
-export const FormContext = React.createContext<Context>(
-  ({
-    fields: {},
-    isValid: true,
-    setField: () => () => {},
-    submit: () => {},
-    reset: () => {},
-  }: Context)
-)
+export const FormContext = React.createContext<Context>({
+  fields: {},
+  isValid: true,
+  setField: () => () => {},
+  submit: () => {},
+  reset: () => {},
+})
 
 // ===========================
 // Form Component
@@ -51,6 +52,7 @@ const Form = ({ children, onSubmit = () => {} }: Props) => {
   const isValid = Object.keys(state)
     .map(field => state[field].error)
     .every(error => !error)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setField = (key: string, validate?: Validator) => (value: any) => {
     setState(
       (s: State): State => ({
@@ -86,7 +88,7 @@ const Form = ({ children, onSubmit = () => {} }: Props) => {
         {}
       )
     )
-  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     submit()
   }

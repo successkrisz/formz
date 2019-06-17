@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "Form library to provide html like experience when building forms without having to worry about state",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/successkrisz/formz.git"
@@ -10,33 +11,30 @@
   "author": "Krisztian Balla",
   "license": "MIT",
   "private": false,
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>setupTests.js"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules"
-    ]
-  },
   "scripts": {
     "test": "jest tests",
     "build": "rollup -c",
     "prepack": "yarn build",
-    "lint": "eslint src",
+    "lint": "eslint src --ext ts,tsx",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@ballatech/eslint-config": "^1.0.0",
+    "@types/enzyme": "^3.9.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.13",
+    "@types/react": "^16.8.18",
+    "@types/react-dom": "^16.8.4",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
     "babel-jest": "^24.8.0",
     "coveralls": "^3.0.3",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.1",
     "eslint": "^5.16.0",
-    "flow-bin": "^0.98.1",
     "jest": "^24.8.0",
     "prettier": "^1.17.1",
     "prettier-cli": "^0.1.0",
@@ -47,9 +45,13 @@
     "rollup": "^1.12.3",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-flow": "^1.1.1",
+    "rollup-plugin-dts": "^1.1.1",
     "rollup-plugin-node-resolve": "^5.0.0",
-    "rollup-plugin-uglify": "^6.0.2"
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-uglify": "^6.0.2",
+    "ts-jest": "^24.0.2",
+    "tslib": "^1.9.3",
+    "typescript": "^3.4.5"
   },
   "peerDependencies": {
     "react": "^16.8.6",

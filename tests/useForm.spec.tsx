@@ -3,15 +3,17 @@ import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
 
 import { Form, useForm, FormContext } from '../src'
+import { Validator, Context } from '../src/Form'
+import { UseFormHook } from '../src/useForm'
 
-const SampleInputComponent = ({ name, validate }) => {
+const SampleInputComponent = ({ name, validate }: { name: string; validate?: Validator }) => {
   const { value, setField } = useForm(name, '', validate)
 
   return <input onChange={e => setField(e.target.value)} value={value} className={name} />
 }
 
 describe('useForm', () => {
-  let context
+  let context: Context
   const ContextChecker = () => (
     <FormContext.Consumer>
       {value => {
@@ -26,8 +28,14 @@ describe('useForm', () => {
   })
 
   test('should provide submit', () => {
-    let values = {}
-    const Component = () => {
+    let values: UseFormHook = {
+      value: undefined,
+      isValid: undefined,
+      setField: undefined,
+      submit: undefined,
+      reset: undefined,
+    }
+    const Component = (): null => {
       values = useForm('foo')
       return null
     }
@@ -68,7 +76,7 @@ describe('useForm', () => {
 
   test('should support validation on the field', () => {
     const validators = {
-      minLength: value => (value.length < 10 ? 'too short' : null),
+      minLength: (value: any) => (value.length < 10 ? 'too short' : null),
     }
     const validatorSpy = jest.spyOn(validators, 'minLength')
 
