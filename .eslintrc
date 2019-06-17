@@ -8,6 +8,7 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "react/prop-types": 0,
-    "flowtype/no-types-missing-file-annotation": 0
+    "flowtype/no-types-missing-file-annotation": 0,
+    "@typescript-eslint/explicit-function-return-type": "off"
   }
 }

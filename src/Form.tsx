@@ -3,27 +3,30 @@ import React from 'react'
 // ===========================
 // Types
 // ===========================
-export type Props = {
+export interface Props {
   children: React.ReactNode
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit?: (values: { [fieldName: string]: any }) => void
 }
 
-type Field = {
+interface Field {
   value: string
   validate?: Validator
   error?: string
   warn?: string
 }
 
-type State = {
+interface State {
   [fieldName: string]: Field
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Validator = (value: any, fields: { [fieldName: string]: any }) => string | null
 
-export type Context = {
+export interface Context {
   fields: State
   isValid: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setField: (name: string, validate?: Validator) => (value: any) => void
   submit: () => void
   reset: () => void
@@ -49,6 +52,7 @@ const Form = ({ children, onSubmit = () => {} }: Props) => {
   const isValid = Object.keys(state)
     .map(field => state[field].error)
     .every(error => !error)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setField = (key: string, validate?: Validator) => (value: any) => {
     setState(
       (s: State): State => ({

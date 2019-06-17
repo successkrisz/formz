@@ -15,7 +15,7 @@
     "test": "jest tests",
     "build": "rollup -c",
     "prepack": "yarn build",
-    "lint": "eslint src",
+    "lint": "eslint src --ext ts,tsx",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "devDependencies": {
