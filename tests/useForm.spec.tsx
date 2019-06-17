@@ -3,8 +3,9 @@ import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
 
 import { Form, useForm, FormContext } from '../src'
+import { Validator } from '../src/Form'
 
-const SampleInputComponent = ({ name, validate }) => {
+const SampleInputComponent = ({ name, validate }: { name: string; validate?: Validator }) => {
   const { value, setField } = useForm(name, '', validate)
 
   return <input onChange={e => setField(e.target.value)} value={value} className={name} />
@@ -26,7 +27,13 @@ describe('useForm', () => {
   })
 
   test('should provide submit', () => {
-    let values = {}
+    let values = {
+      value: undefined,
+      isValid: undefined,
+      setField: undefined,
+      submit: undefined,
+      reset: undefined,
+    }
     const Component = () => {
       values = useForm('foo')
       return null

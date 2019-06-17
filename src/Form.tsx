@@ -1,47 +1,45 @@
-// @flow
-import * as React from 'react'
+import React from 'react'
 
 // ===========================
-// Flow Types
+// Types
 // ===========================
 export type Props = {
-  +children: React.Node,
-  +onSubmit?: ({ [string]: any }) => void,
+  children: React.ReactNode
+  onSubmit?: (values: { [fieldName: string]: any }) => void
 }
 
-type Field = {|
-  value: string,
-  error: ?string,
-  warn?: string,
-|}
+type Field = {
+  value: string
+  validate?: Validator
+  error?: string
+  warn?: string
+}
 
 type State = {
-  [string]: Field,
+  [fieldName: string]: Field
 }
 
-export type Validator = (value: any, fields: { [string]: any }) => string | null | void
+export type Validator = (value: any, fields: { [fieldName: string]: any }) => string | null
 
-export type Context = {|
-  +fields: State,
-  +isValid: boolean,
-  +setField: (name: string, validate?: Validator) => any => void,
-  +submit: () => void,
-  +reset: () => void,
-|}
+export type Context = {
+  fields: State
+  isValid: boolean
+  setField: (name: string, validate?: Validator) => (value: any) => void
+  submit: () => void
+  reset: () => void
+}
 
 // ===========================
 // Context
 // ===========================
 
-export const FormContext = React.createContext<Context>(
-  ({
-    fields: {},
-    isValid: true,
-    setField: () => () => {},
-    submit: () => {},
-    reset: () => {},
-  }: Context)
-)
+export const FormContext = React.createContext<Context>({
+  fields: {},
+  isValid: true,
+  setField: () => () => {},
+  submit: () => {},
+  reset: () => {},
+})
 
 // ===========================
 // Form Component
@@ -86,7 +84,7 @@ const Form = ({ children, onSubmit = () => {} }: Props) => {
         {}
       )
     )
-  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     submit()
   }

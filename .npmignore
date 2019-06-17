@@ -5,7 +5,9 @@ tests
 
 babel.config.js
 rollup.config.js
-setupTests.js
+setupTests.ts
+tsconfig.json
+jest.config.js
 .eslintrc
 .flowconfig
 *.lock

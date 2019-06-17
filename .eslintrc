@@ -1,6 +1,13 @@
 {
-  "extends": "@ballatech",
+  "extends": [
+    "@ballatech",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "flowtype/no-types-missing-file-annotation": 0
   }
 }
